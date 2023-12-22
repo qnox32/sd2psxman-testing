@@ -20,8 +20,8 @@
     extern unsigned int size_##mod##_irx
 
 #define IRX_LOAD(mod)                                                           \
-    if (SifExecModuleBuffer(mod##_irx, size_##mod##_irx, 0, NULL, NULL) < 0)    \
-    printf("Could not load ##mod##\n")
+    ID = SifExecModuleBuffer(mod##_irx, size_##mod##_irx, 0, NULL, &RET)        \
+    if (ID < 0 || RET ==1) {xprintf("id:%d, ret:%d\n")}
 
 #define xprintf(f_, ...)         \
     printf((f_), ##__VA_ARGS__); \
@@ -589,21 +589,21 @@ bool countdown()
 
 int main()
 {
-
+    int ID, RET;
     init_scr();
 
-    xprintf("Loading sio2man\n");
+    xprintf("Loading sio2man:");
     IRX_LOAD(sio2man);
     delay(1);
 
-    xprintf("Loading sd2psxman\n");
+    xprintf("Loading sd2psxman:");
     IRX_LOAD(sd2psxman);
     delay(1);
     
-    xprintf("Loading mcman\n");
+    xprintf("Loading mcman:");
     IRX_LOAD(mcman);
 
-    xprintf("Loading padman\n");
+    xprintf("Loading padman:");
     IRX_LOAD(padman);
 
     sd2psxman_init();
